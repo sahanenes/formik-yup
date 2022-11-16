@@ -6,8 +6,11 @@ import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import image from "../assets/result.svg";
 import { Link, useNavigate } from "react-router-dom";
-
+import { Formik, Form } from "formik";
 import { useSelector } from "react-redux";
+import { TextField } from "@mui/material";
+
+const loginSchema = {};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,7 +52,30 @@ const Login = () => {
           >
             Login
           </Typography>
-
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginSchema}
+            onSubmit={(values, actions) => {
+              actions.resetForm();
+              actions.setSubmitting(false);
+            }}
+          >
+            {(values, isSubmitting, handleChange, handleBlur) => (
+              <Form>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <TextField
+                    label="Email"
+                    name="email"
+                    id="email"
+                    type="email"
+                    variant="outlined"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                </Box>
+              </Form>
+            )}
+          </Formik>
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Do you have not an account?</Link>
           </Box>

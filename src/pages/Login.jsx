@@ -60,7 +60,14 @@ const Login = () => {
               actions.setSubmitting(false);
             }}
           >
-            {(values, isSubmitting, handleChange, handleBlur) => (
+            {(
+              values,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              touched,
+              errors
+            ) => (
               <Form>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <TextField
@@ -71,6 +78,8 @@ const Login = () => {
                     variant="outlined"
                     value={values.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.email && errors.email}
                   />
                 </Box>
               </Form>

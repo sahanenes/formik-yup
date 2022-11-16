@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 import * as yup from "yup";
 import useAuthCall from "../hooks/useAuthCall";
 import { useEffect } from "react";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Please enter valid email").required(),
@@ -37,8 +38,12 @@ const Login = () => {
   useEffect(() => {
     if (currentUser) {
       navigate("/stock");
+      toastSuccessNotify("login successfull");
     }
   }, [currentUser]);
+  useEffect(() => {
+    error && toastErrorNotify("login cannot be performed");
+  }, [error]);
 
   return (
     <Container maxWidth="lg">

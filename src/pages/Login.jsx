@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import * as yup from "yup";
+import useAuthCall from "../hooks/useAuthCall";
+import { useEffect } from "react";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Please enter valid email").required(),
@@ -31,6 +33,12 @@ const loginSchema = yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
   const { currentUser, error, loading } = useSelector((state) => state?.auth);
+  const { login } = useAuthCall();
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/stock");
+    }
+  }, [currentUser]);
 
   return (
     <Container maxWidth="lg">
@@ -72,6 +80,8 @@ const Login = () => {
             initialValues={{ email: "", password: "" }}
             validationSchema={loginSchema}
             onSubmit={(values, actions) => {
+              login(values);
+              navigate("/stock");
               actions.resetForm();
               actions.setSubmitting(false);
             }}
@@ -123,7 +133,7 @@ const Login = () => {
             )}
           </Formik>
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link to="/register">Do you have not an account?</Link>
+            <Link to="/register">Don't you have an account?</Link>
           </Box>
         </Grid>
 
